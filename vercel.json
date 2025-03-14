@@ -22,11 +22,11 @@
     }
   ],
   "env": {
-    "DB_USER": "@db_user",
-    "DB_HOST": "@db_host",
-    "DB_NAME": "@db_name",
-    "DB_PASSWORD": "@db_password",
-    "DB_PORT": "@db_port",
-    "JWT_SECRET": "@jwt_secret"
+    "DB_USER": "neondb_owner",
+    "DB_HOST": "ep-polished-fire-a2jhywe6-pooler.eu-central-1.aws.neon.tech",
+    "DB_NAME": "neondb",
+    "DB_PASSWORD": "npg_ElOGtjQfJq78",
+    "DB_PORT": "5432",
+    "JWT_SECRET": "robinprinsen"
   }
 } 

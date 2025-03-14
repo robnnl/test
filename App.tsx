@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginForm from './components/auth/LoginForm';
-import Sidebar from './components/navigation/Sidebar';
-import Dashboard1 from './components/dashboard/Dashboard1';
-import Dashboard2 from './components/dashboard/Dashboard2';
-import Settings from './components/settings/Settings';
-import Configuration from './components/configuration/Configuration';
+import LoginForm from './components/auth/LoginForm.tsx';
+import Sidebar from './components/navigation/Sidebar.tsx';
+import Dashboard1 from './components/dashboard/Dashboard1.tsx';
+import Dashboard2 from './components/dashboard/Dashboard2.tsx';
+import Settings from './components/settings/Settings.tsx';
+import Configuration from './components/configuration/Configuration.tsx';
 
 interface LoginCredentials {
   domain: string;

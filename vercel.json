@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build" }
+    },
+    {
+      "src": "backend/src/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/src/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "build/$1"
+    }
+  ],
+  "env": {
+    "DB_USER": "@db_user",
+    "DB_HOST": "@db_host",
+    "DB_NAME": "@db_name",
+    "DB_PASSWORD": "@db_password",
+    "DB_PORT": "@db_port",
+    "JWT_SECRET": "@jwt_secret"
+  }
+} 

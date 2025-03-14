@@ -1,0 +1,29 @@
+CREATE TABLE IF NOT EXISTS organizations (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  domain VARCHAR(255) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  organization_id INTEGER REFERENCES organizations(id),
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(email, organization_id)
+);
+
+CREATE TABLE IF NOT EXISTS api_credentials (
+  id SERIAL PRIMARY KEY,
+  organization_id INTEGER REFERENCES organizations(id),
+  platform VARCHAR(100) NOT NULL,
+  api_key VARCHAR(255) NOT NULL,
+  api_secret VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(organization_id, platform)
+); 

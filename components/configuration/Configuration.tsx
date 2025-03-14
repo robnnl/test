@@ -110,8 +110,19 @@ const Configuration: React.FC = () => {
           throw new Error('Kon API credentials niet ophalen');
         }
         
-        const data = await response.json();
-        setCredentials(data);
+        const rawData = await response.json();
+        
+        const typedCredentials: ApiCredential[] = rawData.map((item: any) => ({
+          id: item.id,
+          platform: item.platform as Platform,
+          api_key: item.api_key,
+          api_secret: item.api_secret,
+          organization_id: item.organization_id,
+          created_at: item.created_at,
+          updated_at: item.updated_at
+        }));
+        
+        setCredentials(typedCredentials);
       } catch (err) {
         setError('Er is een fout opgetreden bij het ophalen van de API credentials');
         console.error(err);
@@ -134,23 +145,26 @@ const Configuration: React.FC = () => {
         credentials: 'include'
       });
       
-      const saveResult = await response.json() as ApiResponse<ApiCredential>;
+      const rawData = await response.json();
       
-      if (response.ok && saveResult.data) {
+      if (response.ok && rawData.success && rawData.data) {
         const newCredential: ApiCredential = {
-          id: saveResult.data.id,
-          platform: saveResult.data.platform as Platform,
-          api_key: saveResult.data.api_key,
-          api_secret: saveResult.data.api_secret,
-          organization_id: saveResult.data.organization_id,
-          created_at: saveResult.data.created_at,
-          updated_at: saveResult.data.updated_at
+          id: rawData.data.id,
+          platform: rawData.data.platform as Platform,
+          api_key: rawData.data.api_key,
+          api_secret: rawData.data.api_secret,
+          organization_id: rawData.data.organization_id,
+          created_at: rawData.data.created_at,
+          updated_at: rawData.data.updated_at
         };
         
-        setCredentials([...credentials, newCredential]);
+        setCredentials(prev => [...prev, newCredential]);
         return { success: true, data: newCredential };
       } else {
-        return { success: false, error: saveResult.error || 'Kon API credential niet opslaan' };
+        return { 
+          success: false, 
+          error: (rawData && rawData.error) ? rawData.error : 'Kon API credential niet opslaan' 
+        };
       }
     } catch (err) {
       console.error(err);

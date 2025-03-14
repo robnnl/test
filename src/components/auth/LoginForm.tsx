@@ -16,10 +16,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     email: '',
     password: ''
   });
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(formData);
+    setError('');
+    setIsLoading(true);
+    
+    try {
+      await onSubmit(formData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Er is iets misgegaan');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (field: keyof LoginCredentials) => 
@@ -33,6 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
     <div className="login-form">
       <h2>Inloggen</h2>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="domain">Domein</label>
@@ -65,7 +77,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             required
           />
         </div>
-        <button type="submit">Inloggen</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Bezig met inloggen...' : 'Inloggen'}
+        </button>
       </form>
     </div>
   );

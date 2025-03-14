@@ -1,30 +1,24 @@
-import express from 'express';
+import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from '../server';
+import { cookieOptions } from '../middleware/auth';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/login', async (req, res) => {
-  const { domain, email, password } = req.body;
-
   try {
-    // Zoek organisatie
-    const orgResult = await pool.query(
-      'SELECT id FROM organizations WHERE domain = $1',
-      [domain]
-    );
-
-    if (orgResult.rows.length === 0) {
-      return res.status(401).json({ error: 'Ongeldige inloggegevens' });
+    const { domain, email, password } = req.body;
+    
+    // Valideer input
+    if (!domain || !email || !password) {
+      return res.status(400).json({ error: 'Alle velden zijn verplicht' });
     }
 
-    const organizationId = orgResult.rows[0].id;
-
-    // Zoek gebruiker
+    // Zoek gebruiker in database
     const userResult = await pool.query(
-      'SELECT * FROM users WHERE email = $1 AND organization_id = $2',
-      [email, organizationId]
+      'SELECT * FROM users WHERE email = $1 AND domain = $2',
+      [email, domain]
     );
 
     if (userResult.rows.length === 0) {
@@ -33,8 +27,8 @@ router.post('/login', async (req, res) => {
 
     const user = userResult.rows[0];
 
-    // Verifieer wachtwoord
-    const validPassword = await bcrypt.compare(password, user.password_hash);
+    // Controleer wachtwoord
+    const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(401).json({ error: 'Ongeldige inloggegevens' });
     }
@@ -42,7 +36,7 @@ router.post('/login', async (req, res) => {
     // Genereer JWT token
     const token = jwt.sign(
       { 
-        id: user.id,
+        id: user.id, 
         email: user.email,
         organizationId: user.organization_id,
         role: user.role
@@ -51,23 +45,15 @@ router.post('/login', async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    // Zet token in HTTP-only cookie
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000 // 24 uur
-    });
-
-    res.json({
-      success: true,
-      user: {
-        email: user.email,
-        role: user.role
-      }
-    });
+    // Stuur token als cookie
+    res.cookie('jwt', token, cookieOptions);
+    
+    // Stuur gebruikersgegevens terug (zonder wachtwoord)
+    const { password: _, ...userWithoutPassword } = user;
+    return res.status(200).json(userWithoutPassword);
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: 'Server error' });
   }
 });
 

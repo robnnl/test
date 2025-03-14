@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DateRangePicker from '../common/DateRangePicker';
+import '../common/DateRangePicker.css';
 
 interface ScoreCardProps {
   title: string;
@@ -32,10 +33,18 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ title, value, change }) => (
 );
 
 const Dashboard1: React.FC = () => {
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+
   return (
     <div className="dashboard">
       <h1>Dashboard 1</h1>
-      <DateRangePicker />
+      <DateRangePicker
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+      />
       
       <div className="score-cards">
         {scoreCards.map(card => (

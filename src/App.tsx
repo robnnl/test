@@ -15,10 +15,14 @@ interface LoginCredentials {
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const handleLogin = async (credentials: LoginCredentials) => {
+    setIsLoading(true);
+    setError('');
+
     try {
-      // API call naar backend
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -28,14 +32,16 @@ const App: React.FC = () => {
         credentials: 'include'
       });
 
-      if (response.ok) {
-        setIsAuthenticated(true);
-      } else {
-        // Handle error
-        console.error('Login failed');
+      if (!response.ok) {
+        throw new Error('Ongeldige inloggegevens');
       }
-    } catch (error) {
-      console.error('Login error:', error);
+
+      setIsAuthenticated(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Er is iets misgegaan');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 

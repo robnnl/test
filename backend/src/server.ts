@@ -23,7 +23,7 @@ export const pool = new Pool({
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://jouw-vercel-domain.vercel.app'
+    ? 'https://test-robnnl.vercel.app'
     : 'http://localhost:3000',
   credentials: true
 }));

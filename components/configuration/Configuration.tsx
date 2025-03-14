@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ApiCredential, Platform } from '../../types';
+import { ApiCredential, Platform, ApiResponse } from '../../types';
 import './Configuration.css';
 
 interface ApiCredentialFormProps {
@@ -134,11 +134,21 @@ const Configuration: React.FC = () => {
         credentials: 'include'
       });
       
-      const saveResult = await response.json();
+      const saveResult = await response.json() as ApiResponse<ApiCredential>;
       
       if (response.ok && saveResult.data) {
-        setCredentials([...credentials, saveResult.data]);
-        return { success: true, data: saveResult.data };
+        const newCredential: ApiCredential = {
+          id: saveResult.data.id,
+          platform: saveResult.data.platform as Platform,
+          api_key: saveResult.data.api_key,
+          api_secret: saveResult.data.api_secret,
+          organization_id: saveResult.data.organization_id,
+          created_at: saveResult.data.created_at,
+          updated_at: saveResult.data.updated_at
+        };
+        
+        setCredentials([...credentials, newCredential]);
+        return { success: true, data: newCredential };
       } else {
         return { success: false, error: saveResult.error || 'Kon API credential niet opslaan' };
       }

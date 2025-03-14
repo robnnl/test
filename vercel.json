@@ -4,7 +4,10 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "config": { 
+        "distDir": "build",
+        "zeroConfig": true
+      }
     },
     {
       "src": "backend/src/server.ts",
@@ -17,8 +20,11 @@
       "dest": "backend/src/server.ts"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "build/$1"
+      "dest": "/index.html"
     }
   ],
   "env": {

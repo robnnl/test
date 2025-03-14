@@ -1,17 +1,17 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 interface LoginFormProps {
-  onSubmit: (credentials: { domain: string; email: string; password: string }) => void;
+  onSubmit: (credentials: LoginCredentials) => void;
 }
 
-interface FormFields {
+interface LoginCredentials {
   domain: string;
   email: string;
   password: string;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
-  const [formData, setFormData] = useState<FormFields>({
+  const [formData, setFormData] = useState<LoginCredentials>({
     domain: '',
     email: '',
     password: ''
@@ -22,9 +22,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
   };
 
-  const handleChange = (field: keyof FormFields) => 
+  const handleChange = (field: keyof LoginCredentials) => 
     (e: ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev: FormFields) => ({
+      setFormData(prev => ({
         ...prev,
         [field]: e.target.value
       }));

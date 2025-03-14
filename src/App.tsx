@@ -16,9 +16,27 @@ interface LoginCredentials {
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleLogin = ({ domain, email, password }: LoginCredentials) => {
-    // Implementeer login logica hier
-    setIsAuthenticated(true);
+  const handleLogin = async (credentials: LoginCredentials) => {
+    try {
+      // API call naar backend
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+      } else {
+        // Handle error
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (

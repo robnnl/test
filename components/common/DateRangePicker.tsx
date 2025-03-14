@@ -1,6 +1,7 @@
 import React from 'react';
-import DatePicker from 'react-datepicker';
+import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './DateRangePicker.css';
 
 interface DateRangePickerProps {
   startDate: Date | null;
@@ -17,21 +18,23 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 }) => {
   return (
     <div className="date-range-picker">
-      <div className="date-picker">
-        <label>Start datum:</label>
-        <DatePicker
+      <div className="date-picker-container">
+        <label htmlFor="start-date">Startdatum</label>
+        <ReactDatePicker
+          id="start-date"
           selected={startDate}
           onChange={onStartDateChange}
           selectsStart
           startDate={startDate}
           endDate={endDate}
           dateFormat="dd/MM/yyyy"
-          placeholderText="Selecteer start datum"
         />
       </div>
-      <div className="date-picker">
-        <label>Eind datum:</label>
-        <DatePicker
+      
+      <div className="date-picker-container">
+        <label htmlFor="end-date">Einddatum</label>
+        <ReactDatePicker
+          id="end-date"
           selected={endDate}
           onChange={onEndDateChange}
           selectsEnd
@@ -39,7 +42,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           endDate={endDate}
           minDate={startDate}
           dateFormat="dd/MM/yyyy"
-          placeholderText="Selecteer eind datum"
         />
       </div>
     </div>

@@ -1,41 +1,32 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 
-interface LoginFormProps {
-  onSubmit: (credentials: LoginCredentials) => void;
-}
-
 interface LoginCredentials {
   domain: string;
   email: string;
   password: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+interface LoginFormProps {
+  onSubmit: (credentials: LoginCredentials) => void;
+  error?: string;
+  isLoading?: boolean;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, error, isLoading = false }) => {
   const [formData, setFormData] = useState<LoginCredentials>({
     domain: '',
     email: '',
     password: ''
   });
-  const [error, setError] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
-    
-    try {
-      await onSubmit(formData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Er is iets misgegaan');
-    } finally {
-      setIsLoading(false);
-    }
+    onSubmit(formData);
   };
 
   const handleChange = (field: keyof LoginCredentials) => 
     (e: ChangeEvent<HTMLInputElement>) => {
-      setFormData(prev => ({
+      setFormData((prev: LoginCredentials) => ({
         ...prev,
         [field]: e.target.value
       }));

@@ -103,8 +103,12 @@ const Configuration: React.FC = () => {
 
   useEffect(() => {
     const fetchCredentials = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api-credentials`);
+        const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
+        const response = await fetch(`${apiBaseUrl}/api-credentials`, {
+          credentials: 'include'
+        });
         
         if (!response.ok) {
           throw new Error('Kon API credentials niet ophalen');
@@ -112,7 +116,7 @@ const Configuration: React.FC = () => {
         
         const rawData = await response.json();
         
-        const typedCredentials: ApiCredential[] = rawData.map((item: any) => ({
+        const typedCredentials: ApiCredential[] = Array.isArray(rawData) ? rawData.map((item: any) => ({
           id: item.id,
           platform: item.platform as Platform,
           api_key: item.api_key,
@@ -120,7 +124,7 @@ const Configuration: React.FC = () => {
           organization_id: item.organization_id,
           created_at: item.created_at,
           updated_at: item.updated_at
-        }));
+        })) : [];
         
         setCredentials(typedCredentials);
       } catch (err) {
@@ -136,7 +140,8 @@ const Configuration: React.FC = () => {
 
   const handleSaveCredential = async (credential: Omit<ApiCredential, 'id' | 'created_at' | 'updated_at' | 'organization_id'>) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api-credentials`, {
+      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${apiBaseUrl}/api-credentials`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

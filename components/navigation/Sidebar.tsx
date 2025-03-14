@@ -1,28 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-interface NavItem {
-  path: string;
-  label: string;
-}
-
-const navItems: NavItem[] = [
-  { path: '/home', label: 'Home' },
-  { path: '/dashboard1', label: 'Dashboard 1' },
-  { path: '/dashboard2', label: 'Dashboard 2' },
-  { path: '/settings', label: 'Instellingen' },
-  { path: '/configuration', label: 'API Configuratie' }
-];
+import { Link, useLocation } from 'react-router-dom';
+import './Sidebar.css';
 
 const Sidebar: React.FC = () => {
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+  
   return (
     <nav className="sidebar">
-      <ul>
-        {navItems.map(({ path, label }) => (
-          <li key={path}>
-            <Link to={path}>{label}</Link>
-          </li>
-        ))}
+      <div className="logo">
+        <h2>Dashboard</h2>
+      </div>
+      <ul className="nav-links">
+        <li className={isActive('/dashboard1') ? 'active' : ''}>
+          <Link to="/dashboard1">Dashboard 1</Link>
+        </li>
+        <li className={isActive('/dashboard2') ? 'active' : ''}>
+          <Link to="/dashboard2">Dashboard 2</Link>
+        </li>
+        <li className={isActive('/settings') ? 'active' : ''}>
+          <Link to="/settings">Instellingen</Link>
+        </li>
+        <li className={isActive('/configuration') ? 'active' : ''}>
+          <Link to="/configuration">Configuratie</Link>
+        </li>
       </ul>
     </nav>
   );

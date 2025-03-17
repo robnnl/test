@@ -9,11 +9,11 @@
   ],
   "builds": [
     {
-      "src": "backend/src/server.ts",
+      "src": "backend/package.json",
       "use": "@vercel/node"
     },
     {
-      "src": "public/**",
+      "src": "public/index.html",
       "use": "@vercel/static-build"
     }
   ],

@@ -3,29 +3,20 @@
   "outputDirectory": "build",
   "devCommand": "npm run start",
   "installCommand": "npm install",
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/backend/dist/$1" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ],
   "builds": [
     {
-      "src": "package.json",
+      "src": "backend/src/server.ts",
       "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/build/$1"
     },
     {
-      "src": "/public/(.*)",
-      "dest": "/build/$1"
+      "src": "public/**",
+      "use": "@vercel/static-build"
     }
-   ],
-
-  //"routes": [
-  //  {
-  //    "src": "/(.*)",
-  //    "dest": "/build/$1"
-  //  }
-  // ],
+  ],
   "env": {
     "DB_USER": "neondb_owner",
     "DB_HOST": "ep-polished-fire-a2jhywe6-pooler.eu-central-1.aws.neon.tech",

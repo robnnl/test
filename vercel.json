@@ -13,9 +13,13 @@
       "use": "@vercel/node"
     },
     {
-      "src": "public/index.html",
-      "use": "@vercel/static-build"
+      "src": "public/**",
+      "use": "@vercel/static"
     }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/backend/dist/server.js" },
+    { "src": "/(.*)", "dest": "/public/$1" }
   ],
   "env": {
     "DB_USER": "neondb_owner",

@@ -11,10 +11,17 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/build/$1"
+      "src": "/public/,
+      "dest": "/"
     }
-  ],
+   ],
+
+  //"routes": [
+  //  {
+  //    "src": "/(.*)",
+  //    "dest": "/build/$1"
+  //  }
+  // ],
   "env": {
     "DB_USER": "neondb_owner",
     "DB_HOST": "ep-polished-fire-a2jhywe6-pooler.eu-central-1.aws.neon.tech",

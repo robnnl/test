@@ -11,8 +11,12 @@
   ],
   "routes": [
     {
-      "src": "/public/",
-      "dest": "/"
+      "src": "/(.*)",
+      "dest": "/build/$1"
+    },
+    {
+      "src": "/public/(.*)",
+      "dest": "/build/$1"
     }
    ],
 

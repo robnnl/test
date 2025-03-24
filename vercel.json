@@ -1,10 +1,14 @@
 {
   "version": 2,
   "framework": "create-react-app",
-  "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build",
+  "buildCommand": "npm run build",
   "devCommand": "npm start",
   "outputDirectory": "build",
   "installCommand": "npm install --legacy-peer-deps",
+  "env": {
+    "CI": "false",
+    "DISABLE_ESLINT_PLUGIN": "true"
+  },
   "routes": [
     {
       "handle": "filesystem"

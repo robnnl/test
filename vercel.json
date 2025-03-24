@@ -1,12 +1,7 @@
 {
   "version": 2,
-  "framework": "nextjs",
-  "buildCommand": "next build",
-  "devCommand": "next dev",
-  "outputDirectory": ".next",
+  "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "env": {
-    "CI": "false",
-    "DISABLE_ESLINT_PLUGIN": "true"
-  }
+  "framework": null,
+  "outputDirectory": ".next"
 } 

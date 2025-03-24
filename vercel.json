@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "CI=false npm run build",
+  "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build",
   "outputDirectory": "build",
   "framework": "create-react-app",
   "devCommand": "npm run start",
-  "installCommand": "npm install",
+  "installCommand": "npm install --legacy-peer-deps",
   "builds": [
     {
       "src": "package.json",
@@ -36,13 +36,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "DB_USER": "neondb_owner",
-    "DB_HOST": "ep-polished-fire-a2jhywe6-pooler.eu-central-1.aws.neon.tech",
-    "DB_NAME": "neondb",
-    "DB_PASSWORD": "npg_ElOGtjQfJq78",
-    "DB_PORT": "5432",
-    "JWT_SECRET": "robinprinsen"
-  }
+  ]
 } 

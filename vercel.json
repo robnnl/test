@@ -1,20 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build",
-  "outputDirectory": "build",
   "framework": "create-react-app",
-  "devCommand": "npm run start",
+  "buildCommand": "npm run build",
+  "devCommand": "npm start",
+  "outputDirectory": "build",
   "installCommand": "npm install --legacy-peer-deps",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build"
-      }
-    }
-  ],
   "routes": [
     {
       "handle": "filesystem"

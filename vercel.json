@@ -11,8 +11,7 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "build",
-        "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build",
-        "installCommand": "npm install --legacy-peer-deps"
+        "buildCommand": "CI=false DISABLE_ESLINT_PLUGIN=true npm run build"
       }
     }
   ],
